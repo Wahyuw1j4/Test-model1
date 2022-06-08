@@ -1,30 +1,31 @@
 import tensorflow as tf
-from tensorflow import keras
 import numpy as np
-from keras.applications.vgg16 import VGG16
-import os
+from tensorflow.keras.preprocessing import image
+import matplotlib.pyplot as plt
+from tensorflow.keras.applications.inception_v3 import preprocess_input
+from tensorflow.keras.models import load_model
 
-# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+food_list = ['Ayam Betutu','Beberuk Terong','Coto Makassar','Gudeg','Kerak Telor','Mie Aceh','Nasi Kuning','Nasi Pecel','Papeda','Pempek','Peuyeum','Rawon','Rendang','Sate Madura','Serabi','Soto Banjar','Soto Lamongan','Tahu Sumedang']
+model = load_model('model.h5',compile = False)
 
-# def decode_image(filename, image_size=(512, 512)):
-#     bits = tf.io.read_file(filename)
-#     image = tf.image.decode_image(bits, channels=3)
-#     image = tf.cast(image, tf.float32) / 255.0
-#     image = tf.expand_dims(image, axis=0) 
-#     image = tf.image.resize(image, image_size)
-
-#     return image
+img = 'pic3.png'
+img = image.load_img(img, target_size=(224, 224))
+img = image.img_to_array(img) / 255.0                  
+img = tf.expand_dims(img, axis=0)                                              
 
 
-# img = decode_image('pic1.jpeg')
-# # model = keras.models.load_model("model.h5")
-# model = VGG16(weights = 'model.h5')
-# print(model.predict(img, verbose=1))
+pred = model.predict(img)
+index = np.argmax(pred)
 
-#Function to load the model 
-def load_model(model_path):
-    model = tf.keras.models.load_model(model_path)
-    return model
+prediction = model(img)
+pred_idx = np.argmax(prediction)
+accuration = prediction[0][pred_idx] * 100
 
-print(load_model("bestmodel_18class.hdf5"))
+food_list.sort()
+pred_value = food_list[index]
+
+plt.imshow(img[0])                           
+plt.axis('off')
+plt.title(f'Prediction: {pred_value}, Acc: {accuration}')
+plt.show()
 
