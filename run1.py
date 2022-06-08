@@ -1,14 +1,14 @@
+from tkinter.tix import IMAGE
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras.preprocessing import image
 import matplotlib.pyplot as plt
-from tensorflow.keras.applications.inception_v3 import preprocess_input
 from tensorflow.keras.models import load_model
+
 
 food_list = ['Ayam Betutu','Beberuk Terong','Coto Makassar','Gudeg','Kerak Telor','Mie Aceh','Nasi Kuning','Nasi Pecel','Papeda','Pempek','Peuyeum','Rawon','Rendang','Sate Madura','Serabi','Soto Banjar','Soto Lamongan','Tahu Sumedang']
 model = load_model('model.h5',compile = False)
-
-img = 'pic3.png'
+img = 'pic1.jpeg'
 img = image.load_img(img, target_size=(224, 224))
 img = image.img_to_array(img) / 255.0                  
 img = tf.expand_dims(img, axis=0)                                              
